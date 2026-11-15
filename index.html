@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartRetail AI – Multi-Branch Retail Management Platform</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Design System CSS -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+
+  <style>
+    .portal-hero {
+      background: radial-gradient(circle at 50% 0%, #1e293b 0%, #09090b 100%);
+      color: white;
+      padding: 5rem 0 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .portal-hero::after {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 640px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.22) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .app-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: 1.75rem;
+      transition: all var(--transition-normal);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: var(--shadow-xs);
+    }
+    .app-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: #2563eb;
+    }
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .role-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 1.15rem 1.25rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+    .role-card:hover {
+      border-color: #2563eb;
+      background: #f8fafc;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .workflow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      border: 1px solid #bfdbfe;
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <header style="background:#09090b; color:#a1a1aa; font-size:12px; padding:6px 0; border-bottom:1px solid #18181b;">
+    <div class="container flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <span class="sync-indicator"></span>
+        <span>Connected Multi-Branch Prototype (Cambodia Context: USD $ &bull; 4 Branches in Phnom Penh & Siem Reap)</span>
+      </div>
+      <div>
+        <span>Shared State via <strong>LocalStorage</strong> &bull; Zero Backend Server Required</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="portal-hero">
+    <div class="container" style="position:relative; z-index:2;">
+      <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); backdrop-filter:blur(8px); padding:4px 14px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:0.04em; margin-bottom:1.5rem;">
+        <span style="color:#60a5fa;">SHADCN UI PROTOTYPE</span> &bull; <span>SMARTRETAIL AI v2.5</span>
+      </div>
+      <h1 style="font-size:3rem; font-weight:800; color:white; line-height:1.15; margin-bottom:16px; letter-spacing:-0.03em;">
+        Modern Multi-Branch Electronics<br/>Retail Management Platform
+      </h1>
+      <p style="font-size:1.1rem; color:#94a3b8; max-width:760px; margin:0 auto 28px; line-height:1.6;">
+        A comprehensive retail business system connecting physical retail branches in Phnom Penh & Siem Reap,
+        a central warehouse, POS register, and an online customer e-commerce store with synchronized real-time state and Bakong KHQR.
+      </p>
+
+      <div class="flex justify-center gap-4 flex-wrap">
+        <a href="store.html" class="btn btn-primary btn-lg" style="background:#2563eb; border-color:#2563eb;">
+          Browse Storefront &rarr;
+        </a>
+        <a href="pos.html" class="btn btn-outline btn-lg" style="background:white; color:#09090b;">
+          Open Branch POS
+        </a>
+        <a href="admin.html" class="btn btn-secondary btn-lg" style="background:#18181b; color:#ffffff; border-color:#27272a;">
+          Enterprise Dashboard
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="container" style="padding-top:var(--space-12); padding-bottom:var(--space-16);">
+
+    <!-- Section: The 3 Connected Interfaces -->
+    <div style="margin-bottom:var(--space-16);">
+      <div style="text-align:center; margin-bottom:var(--space-8);">
+        <h2 style="font-size:1.85rem; font-weight:800; margin-bottom:6px; letter-spacing:-0.025em;">Three Unified Frontend Interfaces</h2>
+        <p style="color:var(--muted-foreground); font-size:14px;">All three screens share the exact same central state, inventory ledger, and order pipeline.</p>
+      </div>
+
+      <div class="grid grid-cols-3 gap-6">
+        <!-- Storefront Card -->
+        <div class="app-card">
+          <div style="width:48px; height:48px; border-radius:12px; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119.993z"/></svg>
+          </div>
+          <h3 style="font-size:1.25rem; font-weight:700; margin-bottom:6px; letter-spacing:-0.015em;">1. Customer E-Commerce</h3>
+          <p style="font-size:13px; color:var(--muted-foreground); line-height:1.55; margin-bottom:16px; flex:1;">
+            Modern electronics accessories storefront with live branch stock checks, shopping cart drawer, home delivery vs branch pickup, simulated Bakong KHQR checkout, and order tracking.
+          </p>
+          <div style="font-size:12px; color:var(--foreground); margin-bottom:16px; padding:10px 12px; background:#f8fafc; border-radius:10px; border:1px solid var(--border);">
+            <strong>Features:</strong> Home delivery, Phnom Penh & Siem Reap pickup, automatic stock reservation & rollback.
+          </div>
+          <a href="store.html" class="btn btn-outline w-full justify-center">Launch Online Store &rarr;</a>
+        </div>
+
+        <!-- POS Card -->
+        <div class="app-card">
+          <div style="width:48px; height:48px; border-radius:12px; background:#ecfdf5; color:#10b981; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-6.75 4.5h16.5a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5H4.25A2.25 2.25 0 002 6.75v10.5A2.25 2.25 0 004.25 21z"/></svg>
+          </div>
+          <h3 style="font-size:1.25rem; font-weight:700; margin-bottom:6px; letter-spacing:-0.015em;">2. Branch POS Terminal</h3>
+          <p style="font-size:13px; color:var(--muted-foreground); line-height:1.55; margin-bottom:16px; flex:1;">
+            High-speed touch point-of-sale terminal for physical branch cashiers. Real-time barcode scan, available branch stock validation, Bakong KHQR tender with live countdown, and thermal receipt print.
+          </p>
+          <div style="font-size:12px; color:var(--foreground); margin-bottom:16px; padding:10px 12px; background:#f8fafc; border-radius:10px; border:1px solid var(--border);">
+            <strong>Features:</strong> Immediate on-hand decrement, Bakong KHQR simulation, discount coupons, 80mm printable thermal slip.
+          </div>
+          <a href="pos.html" class="btn btn-outline w-full justify-center">Launch POS Terminal &rarr;</a>
+        </div>
+
+        <!-- Admin Card -->
+        <div class="app-card">
+          <div style="width:48px; height:48px; border-radius:12px; background:#faf5ff; color:#7c3aed; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+          </div>
+          <h3 style="font-size:1.25rem; font-weight:700; margin-bottom:6px; letter-spacing:-0.015em;">3. Management SaaS</h3>
+          <p style="font-size:13px; color:var(--muted-foreground); line-height:1.55; margin-bottom:16px; flex:1;">
+            Enterprise operations portal with 15 business submodules: Multi-branch inventory, Stock Transfers, Supplier PO receiving, Returns RMA, Payments & KHQR Ledger, and live AI business advisor.
+          </p>
+          <div style="font-size:12px; color:var(--foreground); margin-bottom:16px; padding:10px 12px; background:#f8fafc; border-radius:10px; border:1px solid var(--border);">
+            <strong>Features:</strong> Scoped branch views, dynamic Chart.js charts, Payments & KHQR management, 1-click AI draft transfers.
+          </div>
+          <a href="admin.html" class="btn btn-outline w-full justify-center">Launch Management &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: 10 Demo Roles Showcase & Instant Switcher -->
+    <div style="background:#ffffff; border:1px solid var(--border); border-radius:var(--radius-2xl); padding:2rem; margin-bottom:var(--space-16); box-shadow:var(--shadow-xs);">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1.25rem; flex-wrap:wrap; gap:16px;">
+        <div>
+          <h2 style="font-size:1.5rem; font-weight:800; margin-bottom:4px; letter-spacing:-0.02em;">Ten Scoped Demo User Roles</h2>
+          <p style="font-size:14px; color:var(--muted-foreground);">Click any persona below to simulate their role and jump straight into their assigned interface:</p>
+        </div>
+        <a href="login.html" class="btn btn-secondary btn-sm">Dedicated Login Screen &rarr;</a>
+      </div>
+
+      <div class="role-grid" id="portal-role-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+    <!-- Section: Core Business Workflows -->
+    <div>
+      <div style="text-align:center; margin-bottom:var(--space-8);">
+        <h2 style="font-size:1.85rem; font-weight:800; margin-bottom:6px; letter-spacing:-0.025em;">Demonstrable Core Business Workflows</h2>
+        <p style="color:var(--muted-foreground); font-size:14px;">Interactive end-to-end flows ready for mentors, teammates, and clients</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="card" style="padding:18px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span class="workflow-pill">Workflow A</span>
+            <h4 style="font-size:14px; font-weight:700;">Walk-in Cashier Purchase & Thermal Slip</h4>
+          </div>
+          <p style="font-size:12px; color:var(--muted-foreground); line-height:1.5;">
+            Cashier Sopheak Lim opens POS at Phnom Penh Central (B001), scans Anker 20W charger, tenders cash, receipt RCP-2026-xxx prints, physical stock drops from 18 to 17, and dashboard KPIs reflect the $18 revenue.
+          </p>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span class="workflow-pill">Workflow B</span>
+            <h4 style="font-size:14px; font-weight:700;">Online Delivery Order & Reservation</h4>
+          </div>
+          <p style="font-size:12px; color:var(--muted-foreground); line-height:1.5;">
+            Customer places delivery order online. Branch B001 available stock drops immediately via reservation. Fulfillment staff marks "Picking" &rarr; "Dispatched", which fulfills the reservation and deducts physical on-hand stock.
+          </p>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span class="workflow-pill">Workflow C</span>
+            <h4 style="font-size:14px; font-weight:700;">Branch Click & Collect Store Pickup</h4>
+          </div>
+          <p style="font-size:12px; color:var(--muted-foreground); line-height:1.5;">
+            Customer selects "Store Pickup" at Sen Sok (B003). System validates local stock. Branch staff picks the item and marks it "Ready for Pickup" for customer handover.
+          </p>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span class="workflow-pill">Workflow D</span>
+            <h4 style="font-size:14px; font-weight:700;">Procurement & Goods Receiving</h4>
+          </div>
+          <p style="font-size:12px; color:var(--muted-foreground); line-height:1.5;">
+            Procurement creates PO-2026-014. <em>PO creation does NOT increase inventory.</em> Head Office approves. Inventory staff receives 40 chargers into Central Warehouse (WH001), increasing active on-hand stock.
+          </p>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span class="workflow-pill">Workflow E</span>
+            <h4 style="font-size:14px; font-weight:700;">Inter-Branch Stock Transfer</h4>
+          </div>
+          <p style="font-size:12px; color:var(--muted-foreground); line-height:1.5;">
+            Sen Sok (B003) is low on Logitech mice. Manager submits transfer request from Toul Kork (B002). Upon dispatch, source stock decreases. Destination confirms receiving, and Sen Sok stock increases.
+          </p>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span class="workflow-pill">Workflow H</span>
+            <h4 style="font-size:14px; font-weight:700;">Bakong KHQR Payment & Verification</h4>
+          </div>
+          <p style="font-size:12px; color:var(--muted-foreground); line-height:1.5;">
+            Simulate authentic National Bank of Cambodia KHQR payments on POS and online store with live 180s countdown and dual-currency (USD/KHR). If payment expires or fails, reserved stock is automatically rolled back!
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer style="background:#09090b; color:#a1a1aa; padding:2.5rem 0; font-size:12px; border-top:1px solid #18181b; text-align:center;">
+    <div class="container">
+      <p style="color:#ffffff; font-weight:700; margin-bottom:4px; font-size:13px;">SmartRetail AI – Multi-Branch Electronics Retail Management Prototype</p>
+      <p>Designed for university mentor presentation, teammate demonstration, and customer requirement analysis.</p>
+      <p style="margin-top:8px; color:#71717a;">Shadcn UI &bull; Heroicons &bull; Sileo Toast &bull; Vanilla ES6+ &bull; LocalStorage Sync &bull; Cambodian Context</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data/initial-data.js"></script>
+  <script src="js/core/event-bus.js"></script>
+  <script src="js/core/state-manager.js"></script>
+  <script src="js/core/auth.js"></script>
+  <script src="js/services/inventory-service.js"></script>
+  <script src="js/services/payment-service.js"></script>
+  <script src="js/services/sales-service.js"></script>
+  <script src="js/services/order-service.js"></script>
+  <script src="js/services/transfer-service.js"></script>
+  <script src="js/services/purchase-service.js"></script>
+  <script src="js/services/return-service.js"></script>
+  <script src="js/services/report-service.js"></script>
+  <script src="js/services/ai-service.js"></script>
+  <script src="js/components/icons.js"></script>
+  <script src="js/components/toast.js"></script>
+  <script src="js/components/modal.js"></script>
+  <script src="js/components/demo-bar.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const roleGrid = document.getElementById('portal-role-grid');
+      if (!roleGrid) return;
+
+      const users = INITIAL_USERS || [];
+      roleGrid.innerHTML = users.map(u => `
+        <div class="role-card" onclick="authService.switchUserById('${u.id}', true)">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-weight:700; color:var(--foreground); font-size:14px;">${u.name}</span>
+            <span class="badge ${u.role === 'Cashier' ? 'badge-teal' : u.role.includes('Admin') ? 'badge-primary' : 'badge-secondary'}" style="font-size:10px;">
+              ${u.role}
+            </span>
+          </div>
+          <div style="font-size:11px; color:#2563eb; font-weight:600;">
+            Branch Scope: ${u.branch === 'All' ? 'Company-wide (All Branches)' : u.branch === 'Customer' ? 'Online Shopper' : `${u.branchName || u.branch}`}
+          </div>
+          <p style="font-size:11px; color:var(--muted-foreground); line-height:1.45; margin:0;">${u.description}</p>
+        </div>
+      `).join('');
+    });
+  </script>
+</body>
+</html>

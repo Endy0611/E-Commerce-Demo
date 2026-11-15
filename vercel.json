@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/store", "destination": "/store.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/pos", "destination": "/pos.html" },
+    { "source": "/login", "destination": "/login.html" }
+  ]
+}
+

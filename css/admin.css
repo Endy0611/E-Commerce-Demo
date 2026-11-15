@@ -1,0 +1,515 @@
+/* ==========================================================================
+   SmartRetail AI - Enterprise Management SaaS Dashboard CSS
+   Shadcn UI Minimalist Design Language with High-Contrast Dark Sidebar
+   ========================================================================== */
+
+/* Main Layout Shell */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar Navigation (Shadcn Dark Zinc-950 Aesthetic)
+   -------------------------------------------------------------------------- */
+.admin-sidebar {
+  width: 260px;
+  background-color: #ffffff;
+  color: #475569;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--z-sticky);
+  border-right: 1px solid #e2e8f0;
+  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.02);
+  transition: width var(--transition-normal);
+}
+
+.sidebar-brand {
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #0f172a;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.sidebar-brand-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+
+.sidebar-nav-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sidebar-section-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0 0.75rem 0.35rem;
+}
+
+.sidebar-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.45rem 0.75rem;
+  color: #475569;
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+  border: 1px solid transparent;
+}
+
+.sidebar-nav-item:hover {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.sidebar-nav-item.active {
+  background-color: #eff6ff;
+  color: #2563eb;
+  font-weight: 600;
+  border-color: #dbeafe;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.05);
+}
+
+.sidebar-nav-item svg {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  color: #64748b;
+  transition: color var(--transition-fast);
+}
+
+.sidebar-nav-item:hover svg {
+  color: #0f172a;
+}
+
+.sidebar-nav-item.active svg {
+  color: #2563eb;
+}
+
+.sidebar-nav-badge {
+  margin-left: auto;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid #e2e8f0;
+}
+
+.sidebar-nav-item.active .sidebar-nav-badge {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.sidebar-footer {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid #f1f5f9;
+  background: #fcfdfd;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sidebar-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--font-xs);
+}
+
+.sidebar-user-meta {
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar-user-name {
+  color: #0f172a;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-user-role {
+  color: #64748b;
+  font-size: 0.6875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   Admin Main Content Wrapper & Top Header
+   -------------------------------------------------------------------------- */
+.admin-main {
+  margin-left: 260px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-header {
+  height: 60px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+}
+
+.header-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-xs);
+  color: var(--muted-foreground);
+}
+
+.header-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--foreground);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.branch-selector-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ffffff;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.branch-selector-pill select {
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  color: var(--foreground);
+  cursor: pointer;
+  outline: none;
+  font-size: var(--font-xs);
+}
+
+/* --------------------------------------------------------------------------
+   Admin Content Container & Layout
+   -------------------------------------------------------------------------- */
+.admin-content {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+/* KPI Cards Bento Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.15rem;
+  margin-bottom: 1.75rem;
+}
+
+.kpi-col-6 {
+  grid-column: span 6;
+}
+
+.kpi-col-3 {
+  grid-column: span 3;
+}
+
+.kpi-col-4 {
+  grid-column: span 4;
+}
+
+.kpi-col-5 {
+  grid-column: span 5;
+}
+
+.kpi-col-7 {
+  grid-column: span 7;
+}
+
+@media (max-width: 1200px) {
+  .kpi-col-6, .kpi-col-5, .kpi-col-7 {
+    grid-column: span 12;
+  }
+  .kpi-col-3, .kpi-col-4 {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 768px) {
+  .kpi-col-6, .kpi-col-3, .kpi-col-4, .kpi-col-5, .kpi-col-7 {
+    grid-column: span 12;
+  }
+}
+
+/* Analytics Chart Grids */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.chart-card {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.chart-card-body {
+  position: relative;
+  flex: 1;
+  min-height: 260px;
+}
+
+/* Tab Navigation inside Modules (Modern Shadcn Pill Tabs) */
+.module-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #f1f5f9;
+  padding: 4px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+}
+
+.module-tab-btn {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.module-tab-btn:hover {
+  color: var(--foreground);
+}
+
+.module-tab-btn.active {
+  background-color: #ffffff;
+  color: var(--foreground);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Action Filter Bar */
+.action-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   AI Assistant Slide-Out Drawer (Modern Chat Experience)
+   -------------------------------------------------------------------------- */
+.ai-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 9, 11, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: var(--z-drawer);
+  display: none;
+  animation: fadeIn 160ms ease-out;
+}
+
+.ai-drawer-overlay.active {
+  display: block;
+}
+
+.ai-drawer {
+  position: fixed;
+  top: 0;
+  right: -540px;
+  width: 100%;
+  max-width: 500px;
+  height: 100vh;
+  background: #ffffff;
+  z-index: calc(var(--z-drawer) + 1);
+  box-shadow: var(--shadow-2xl);
+  display: flex;
+  flex-direction: column;
+  transition: right 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 1px solid var(--border);
+}
+
+.ai-drawer.active {
+  right: 0;
+}
+
+.ai-drawer-header {
+  padding: 1.25rem 1.5rem;
+  background: #09090b;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #18181b;
+}
+
+.ai-drawer-chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #f8fafc;
+}
+
+.ai-bubble {
+  padding: 0.85rem 1.15rem;
+  border-radius: var(--radius-xl);
+  font-size: var(--font-sm);
+  max-width: 88%;
+  line-height: 1.55;
+}
+
+.ai-bubble-bot {
+  background: #ffffff;
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.ai-bubble-user {
+  background: #0f172a;
+  color: white;
+  align-self: flex-end;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.ai-quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.ai-prompt-chip {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #2563eb;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.ai-prompt-chip:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1d4ed8;
+}
+
+.ai-drawer-input {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+  background: #ffffff;
+  display: flex;
+  gap: 0.5rem;
+}

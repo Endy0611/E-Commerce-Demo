@@ -1,0 +1,513 @@
+/* ==========================================================================
+   SmartRetail AI - Modern Shadcn Point of Sale (POS) Dedicated CSS
+   Touch-friendly, high-contrast, lightning-fast cashier register
+   ========================================================================== */
+
+body.pos-body {
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--background);
+  font-family: var(--font-family);
+}
+
+.pos-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* --------------------------------------------------------------------------
+   POS Top Bar (Dark Zinc-950 Header)
+   -------------------------------------------------------------------------- */
+.pos-header {
+  height: 58px;
+  background-color: #09090b;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  flex-shrink: 0;
+  border-bottom: 1px solid #18181b;
+}
+
+.pos-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.pos-brand svg {
+  color: #2563eb;
+}
+
+.pos-meta-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--font-xs);
+}
+
+.pos-badge-branch {
+  background: #18181b;
+  border: 1px solid #27272a;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Main POS Work Area
+   -------------------------------------------------------------------------- */
+.pos-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Left: Product Catalog Panel */
+.pos-catalog-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8fafc;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.pos-search-bar {
+  padding: 0.75rem 1.25rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pos-categories-strip {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.5rem 1.25rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.pos-cat-chip {
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  background: #f4f4f5;
+  border: 1px solid var(--border);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.pos-cat-chip:hover {
+  background: #e4e4e7;
+  color: var(--foreground);
+}
+
+.pos-cat-chip.active {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.pos-products-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.85rem;
+  align-content: start;
+}
+
+.pos-product-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-2xl);
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  user-select: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.pos-product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px -2px rgba(37, 99, 235, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  border-color: #2563eb;
+}
+
+.pos-product-card:active {
+  transform: scale(0.97);
+}
+
+.pos-product-card.out-of-stock {
+  opacity: 0.45;
+  filter: grayscale(80%);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.pos-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.pos-brand-pill {
+  font-size: 10px;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pos-img-container {
+  width: 100%;
+  aspect-ratio: 1.1 / 1;
+  border-radius: 12px;
+  background: radial-gradient(circle, #f8fafc 0%, #f1f5f9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 8px;
+  border: 1px solid #f1f5f9;
+  position: relative;
+}
+
+.pos-product-img {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.pos-product-card:hover .pos-product-img {
+  transform: scale(1.06);
+}
+
+.pos-product-name {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+  margin-bottom: 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.3em;
+  letter-spacing: -0.01em;
+}
+
+.pos-product-sku {
+  font-size: 10px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.pos-product-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.pos-price-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.pos-product-price {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #09090b;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.pos-product-khr {
+  font-size: 0.65rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.pos-add-icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pos-product-card:hover .pos-add-icon-btn {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   Right: Active Ticket Panel (POS Register Cart)
+   -------------------------------------------------------------------------- */
+.pos-ticket-panel {
+  width: 420px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.03);
+}
+
+.pos-ticket-header {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fafafa;
+}
+
+.pos-customer-bar {
+  padding: 0.65rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ffffff;
+}
+
+.pos-ticket-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pos-ticket-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem;
+  border-radius: var(--radius-lg);
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  transition: all var(--transition-fast);
+}
+
+.pos-ticket-row:hover {
+  background: #f1f5f9;
+}
+
+.pos-ticket-row-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.pos-ticket-row-title {
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pos-ticket-row-sub {
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+}
+
+.pos-qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.pos-qty-btn {
+  width: 24px;
+  height: 24px;
+  background: #f4f4f5;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.pos-qty-btn:hover {
+  background: #e4e4e7;
+}
+
+.pos-qty-val {
+  min-width: 26px;
+  text-align: center;
+  font-weight: 700;
+  font-size: var(--font-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.pos-ticket-row-total {
+  font-size: var(--font-xs);
+  font-weight: 700;
+  color: var(--foreground);
+  width: 64px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.pos-ticket-summary {
+  padding: 1rem 1.25rem;
+  border-top: 1px dashed var(--border);
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pos-summary-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-xs);
+  color: var(--muted-foreground);
+}
+
+.pos-total-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--foreground);
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.pos-ticket-actions {
+  padding: 1rem 1.25rem;
+  background: #ffffff;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Thermal Receipt Styling (80mm Cashier Slip)
+   -------------------------------------------------------------------------- */
+.thermal-receipt {
+  max-width: 320px;
+  margin: 0 auto;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 12px;
+  color: #111;
+  background: #fff;
+  padding: 16px;
+  border: 1px dashed #cbd5e1;
+  border-radius: var(--radius-md);
+}
+
+.receipt-header {
+  text-align: center;
+  border-bottom: 1px dashed #555;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.receipt-items {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+}
+
+.receipt-items th {
+  text-align: left;
+  border-bottom: 1px solid #333;
+  font-size: 11px;
+}
+
+.receipt-items td {
+  padding: 3px 0;
+}
+
+.receipt-totals {
+  border-top: 1px dashed #555;
+  padding-top: 6px;
+  margin-top: 6px;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 2px 0;
+}
+
+.receipt-footer {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 11px;
+  border-top: 1px dashed #555;
+  padding-top: 8px;
+}
+
+/* Browser Print Rule for Receipts */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .thermal-receipt, .thermal-receipt * {
+    visibility: visible;
+  }
+  .thermal-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm;
+    border: none;
+    padding: 0;
+  }
+}

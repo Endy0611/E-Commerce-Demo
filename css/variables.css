@@ -1,0 +1,164 @@
+/* ==========================================================================
+   SmartRetail AI - Modern Shadcn UI Design System Tokens & Variables
+   Inspired by Shadcn UI / Radix / Tailwind CSS Neutral Slate & Zinc
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* --------------------------------------------------------------------------
+     Shadcn UI Standard Semantic Tokens
+     -------------------------------------------------------------------------- */
+  --background: #f8fafc;
+  --foreground: #09090b;
+
+  --card: #ffffff;
+  --card-foreground: #09090b;
+
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+
+  --primary: #0f172a;               /* Slate-900 / High-contrast primary */
+  --primary-foreground: #fafafa;
+  --primary-hover: #1e293b;
+
+  --secondary: #f4f4f5;             /* Zinc-100 / Subtle secondary */
+  --secondary-foreground: #18181b;
+  --secondary-hover: #e4e4e7;
+
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;      /* Zinc-500 */
+
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+
+  --destructive: #ef4444;           /* Red-500 */
+  --destructive-foreground: #ffffff;
+  --destructive-hover: #dc2626;
+
+  --border: #e4e4e7;                /* Zinc-200 / Crisp 1px borders */
+  --input: #e4e4e7;
+  --ring: #2563eb;                  /* Electric Blue Focus Ring */
+
+  --radius: 0.625rem;               /* 10px signature Shadcn radius */
+  --radius-sm: 0.375rem;            /* 6px */
+  --radius-md: 0.5rem;              /* 8px */
+  --radius-lg: 0.75rem;             /* 12px */
+  --radius-xl: 1rem;                /* 16px */
+  --radius-2xl: 1.25rem;            /* 20px */
+  --radius-full: 9999px;
+
+  /* --------------------------------------------------------------------------
+     Modern Vibrant Accents & Brand Hierarchy
+     -------------------------------------------------------------------------- */
+  --color-primary: #0f172a;
+  --color-primary-light: #2563eb;
+  --color-primary-dark: #020817;
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-600: #2563eb;     /* Electric Blue Button/Highlight */
+  --color-primary-700: #1d4ed8;
+
+  --color-secondary: #52525b;
+  --color-secondary-light: #71717a;
+  --color-secondary-dark: #27272a;
+
+  --color-accent: #0d9488;          /* Teal */
+  --color-accent-light: #14b8a6;
+  --color-accent-50: #f0fdfa;
+  --color-accent-100: #ccfbf1;
+
+  /* Feedback Colors (Emerald, Amber, Rose, Sky) */
+  --color-success: #10b981;
+  --color-success-bg: #ecfdf5;
+  --color-success-text: #065f46;
+  --color-success-border: #a7f3d0;
+
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fffbeb;
+  --color-warning-text: #92400e;
+  --color-warning-border: #fde68a;
+
+  --color-danger: #ef4444;
+  --color-danger-bg: #fef2f2;
+  --color-danger-text: #991b1b;
+  --color-danger-border: #fecaca;
+
+  --color-info: #0284c7;
+  --color-info-bg: #f0f9ff;
+  --color-info-text: #075985;
+  --color-info-border: #bae6fd;
+
+  /* Surface & Background Colors */
+  --bg-app: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-alt: #f4f4f5;
+  --bg-surface-hover: #f1f5f9;
+  --bg-subtle: #fafafa;
+
+  --border-light: #f4f4f5;
+  --border-default: #e4e4e7;
+  --border-strong: #d4d4d8;
+  --border-focus: #2563eb;
+
+  /* Typography */
+  --text-main: #09090b;
+  --text-secondary: #52525b;
+  --text-muted: #71717a;
+  --text-inverse: #ffffff;
+  --text-on-primary: #fafafa;
+
+  --font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+  --font-xs: 0.75rem;    /* 12px */
+  --font-sm: 0.875rem;   /* 14px */
+  --font-base: 1rem;     /* 16px */
+  --font-lg: 1.125rem;   /* 18px */
+  --font-xl: 1.25rem;    /* 20px */
+  --font-2xl: 1.5rem;    /* 24px */
+  --font-3xl: 1.875rem;  /* 30px */
+  --font-4xl: 2.25rem;   /* 36px */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Spacing Scale */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* Shadcn Signature Layered Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.09), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+
+  /* Animation Timings */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Z-Index Hierarchy */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-header: 1030;
+  --z-drawer: 1040;
+  --z-modal-backdrop: 1050;
+  --z-modal: 1060;
+  --z-demo-bar: 1070;
+  --z-toast: 1080;
+  --z-tooltip: 1090;
+}
