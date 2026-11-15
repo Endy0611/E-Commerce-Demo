@@ -271,46 +271,23 @@
   flex: 1;
 }
 
-/* KPI Cards Bento Grid */
+/* Clean 4-Column Executive KPI Grid */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1.15rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
   margin-bottom: 1.75rem;
 }
 
-.kpi-col-6 {
-  grid-column: span 6;
-}
-
-.kpi-col-3 {
-  grid-column: span 3;
-}
-
-.kpi-col-4 {
-  grid-column: span 4;
-}
-
-.kpi-col-5 {
-  grid-column: span 5;
-}
-
-.kpi-col-7 {
-  grid-column: span 7;
-}
-
 @media (max-width: 1200px) {
-  .kpi-col-6, .kpi-col-5, .kpi-col-7 {
-    grid-column: span 12;
-  }
-  .kpi-col-3, .kpi-col-4 {
-    grid-column: span 6;
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 768px) {
-  .kpi-col-6, .kpi-col-3, .kpi-col-4, .kpi-col-5, .kpi-col-7 {
-    grid-column: span 12;
+@media (max-width: 640px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
   }
 }
 

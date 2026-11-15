@@ -64,8 +64,9 @@ class ReportService {
       pendingApprovals += transfers.filter(t => t.status === 'Pending Approval' && (t.sourceBranch === branchId || t.destinationBranch === branchId)).length;
     }
 
-    // 6. Low stock items
+    // 6. Low stock items (unique product count for global view, branch count for branch view)
     const lowStockItems = this.invService.getLowStockItems(branchId);
+    const lowStockCount = branchId ? lowStockItems.length : new Set(lowStockItems.map(i => i.sku)).size;
 
     // 7. Total Products & Customers
     const totalProducts = products.length;
@@ -78,7 +79,7 @@ class ReportService {
       totalOrders: totalOrdersCount,
       pendingOrders: pendingOrdersCount,
       pendingApprovals,
-      lowStockCount: lowStockItems.length,
+      lowStockCount,
       totalProducts,
       totalCustomers
     };

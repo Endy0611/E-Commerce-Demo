@@ -102,7 +102,7 @@ class AdminApp {
     if (!contentEl) return;
 
     const moduleTitles = {
-      'dashboard': 'Executive Overview & Business KPIs',
+      'dashboard': 'Dashboard Overview',
       'branches': 'Branch & Warehouse Locations',
       'products': 'Global Product Catalog Management',
       'inventory': 'Multi-Branch Inventory & Stock Status',
@@ -187,11 +187,11 @@ class AdminApp {
         <div class="chart-card">
           <div class="chart-card-header">
             <div>
-              <h4 class="card-title">Sales Revenue by Branch</h4>
-              <span class="card-subtitle">Real-time aggregate across physical stores & central orders</span>
+              <h4 class="card-title" style="font-size:0.9375rem; font-weight:600; color:#0f172a;">Revenue by Branch</h4>
+              <span class="card-subtitle" style="font-size:0.75rem; color:#64748b;">Sales distribution across physical locations</span>
             </div>
           </div>
-          <div class="chart-card-body">
+          <div class="chart-card-body" id="chart-branch-body">
             <canvas id="chart-revenue-branch"></canvas>
           </div>
         </div>
@@ -199,31 +199,31 @@ class AdminApp {
         <div class="chart-card">
           <div class="chart-card-header">
             <div>
-              <h4 class="card-title">Sales by Category</h4>
-              <span class="card-subtitle">Volume breakdown</span>
+              <h4 class="card-title" style="font-size:0.9375rem; font-weight:600; color:#0f172a;">Sales by Category</h4>
+              <span class="card-subtitle" style="font-size:0.75rem; color:#64748b;">Product volume share</span>
             </div>
           </div>
-          <div class="chart-card-body">
+          <div class="chart-card-body" id="chart-category-body">
             <canvas id="chart-sales-category"></canvas>
           </div>
         </div>
       </div>
 
-      <!-- Recent Transactions & Alerts Grid -->
-      <div style="display:grid; grid-template-columns:2fr 1fr; gap:24px;">
-        <div class="card">
-          <div class="card-header">
+      <!-- Recent Orders & Low Stock Section -->
+      <div style="display:grid; grid-template-columns:2fr 1fr; gap:1.25rem;">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header" style="padding:1rem 1.25rem;">
             <div>
-              <h4 class="card-title">Recent Transactions (POS & Online)</h4>
-              <span class="card-subtitle">Synchronized live transaction log</span>
+              <h4 class="card-title" style="font-size:0.9375rem; font-weight:600; color:#0f172a;">Recent Orders</h4>
+              <span class="card-subtitle" style="font-size:0.75rem; color:#64748b;">Latest transactions across POS and Store</span>
             </div>
-            <button class="btn btn-outline btn-sm" onclick="adminApp.renderModule('orders')">View All</button>
+            <button class="btn btn-ghost btn-sm" onclick="adminApp.renderModule('orders')" style="font-size:0.8125rem;">View All &rarr;</button>
           </div>
           <div class="table-container" style="border:none; border-radius:0;">
             <table class="table" id="recent-transactions-table">
               <thead>
                 <tr>
-                  <th>Order / Receipt #</th>
+                  <th>Order #</th>
                   <th>Channel</th>
                   <th>Customer</th>
                   <th>Branch</th>
@@ -239,15 +239,15 @@ class AdminApp {
         </div>
 
         <!-- Low Stock Alerts Widget -->
-        <div class="card">
-          <div class="card-header">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header" style="padding:1rem 1.25rem;">
             <div>
-              <h4 class="card-title">Stock Shortage Alerts</h4>
-              <span class="card-subtitle">Items at or below reorder limit</span>
+              <h4 class="card-title" style="font-size:0.9375rem; font-weight:600; color:#0f172a;">Low Stock Items</h4>
+              <span class="card-subtitle" style="font-size:0.75rem; color:#64748b;">Inventory below safety limit</span>
             </div>
-            <button class="btn btn-outline btn-sm" onclick="adminApp.renderModule('transfers')">Transfer Stock</button>
+            <button class="btn btn-ghost btn-sm" onclick="adminApp.renderModule('transfers')" style="font-size:0.8125rem;">Transfers &rarr;</button>
           </div>
-          <div class="card-body" style="padding:12px; max-height:360px; overflow-y:auto;" id="dashboard-low-stock-list">
+          <div class="card-body" style="padding:0.75rem; max-height:360px; overflow-y:auto;" id="dashboard-low-stock-list">
             <!-- Dynamically loaded -->
           </div>
         </div>
@@ -260,281 +260,64 @@ class AdminApp {
     this.initDashboardCharts();
   }
 
-  generateSparkline(points, width = 280, height = 44, color = '#2563eb', gradId = 'kpi-rev-spark') {
-    const min = Math.min(...points);
-    const max = Math.max(...points);
-    const range = (max - min) || 1;
-    const pad = 4;
-    const h = height - pad * 2;
-    const step = width / (points.length - 1);
-
-    const pts = points.map((val, i) => [
-      i * step,
-      height - pad - ((val - min) / range) * h
-    ]);
-
-    let d = `M ${pts[0][0]} ${pts[0][1]}`;
-    for (let i = 1; i < pts.length; i++) {
-      const prev = pts[i - 1];
-      const cur = pts[i];
-      const cpx = (prev[0] + cur[0]) / 2;
-      d += ` C ${cpx} ${prev[1]}, ${cpx} ${cur[1]}, ${cur[0]} ${cur[1]}`;
-    }
-    const area = `${d} L ${width} ${height} L 0 ${height} Z`;
-
-    return `
-      <svg viewBox="0 0 ${width} ${height}" style="width:100%; height:${height}px; overflow:visible;" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="${color}" stop-opacity="0.25" />
-            <stop offset="100%" stop-color="${color}" stop-opacity="0.0" />
-          </linearGradient>
-        </defs>
-        <path d="${area}" fill="url(#${gradId})" />
-        <path d="${d}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-        <circle cx="${pts[pts.length - 1][0]}" cy="${pts[pts.length - 1][1]}" r="4" fill="${color}" stroke="#ffffff" stroke-width="2" />
-      </svg>
-    `;
-  }
-
   renderDashboardKPIs() {
     const kpiContainer = document.getElementById('dashboard-kpis-container');
     if (!kpiContainer) return;
 
     const bFilter = this.selectedBranchFilter === 'All' ? null : this.selectedBranchFilter;
     const kpis = reportService.getKPISummary(bFilter);
-    const revenueKHR = Math.round(kpis.revenue * 4100).toLocaleString();
-
-    // 1. Channel Revenue Breakdown
-    const orders = stateManager.get('orders') || [];
-    const validOrders = orders.filter(o => !bFilter || o.assignedBranch === bFilter);
-    const posOrders = validOrders.filter(o => o.channel === 'POS');
-    const onlineOrders = validOrders.filter(o => o.channel !== 'POS');
-    const posRev = posOrders.reduce((sum, o) => sum + (o.total || 0), 0);
-    const onlineRev = onlineOrders.reduce((sum, o) => sum + (o.total || 0), 0);
-    const totalRevAll = (posRev + onlineRev) || 1;
-    const posPct = Math.round((posRev / totalRevAll) * 100);
-    const onlinePct = Math.round((onlineRev / totalRevAll) * 100);
-
-    // 2. Valuation calculation
-    const valuation = inventoryService.getValuation ? inventoryService.getValuation(bFilter) : { totalValue: kpis.revenue * 2.5, totalItems: 480 };
-
-    // 3. Digital payment ratios (Bakong KHQR vs Cash vs Card)
-    const payments = stateManager.get('payments') || [];
-    const filteredPayments = payments.filter(p => !bFilter || p.branchId === bFilter);
-    const khqrTotal = filteredPayments.filter(p => p.paymentMethod && p.paymentMethod.includes('KHQR')).reduce((s, p) => s + (p.usdAmount || p.amount || 0), 0);
-    const cashTotal = filteredPayments.filter(p => p.paymentMethod && p.paymentMethod.includes('Cash')).reduce((s, p) => s + (p.usdAmount || p.amount || 0), 0);
-    const cardTotal = filteredPayments.filter(p => p.paymentMethod && p.paymentMethod.includes('Card')).reduce((s, p) => s + (p.usdAmount || p.amount || 0), 0);
-    const totalPay = (khqrTotal + cashTotal + cardTotal) || 1;
-    const khqrPct = Math.round((khqrTotal / totalPay) * 100) || 74;
-    const cashPct = Math.round((cashTotal / totalPay) * 100) || 20;
-    const cardPct = Math.max(0, 100 - khqrPct - cashPct);
-
-    // 4. Low stock items
-    const lowStockItems = inventoryService.getLowStockItems ? inventoryService.getLowStockItems(bFilter) : [];
-
-    // 5. Dynamic 7-day sparkline trajectory based on live revenue
-    const rev = kpis.revenue || 1200;
-    const sparkPoints = [
-      Math.round(rev * 0.42),
-      Math.round(rev * 0.58),
-      Math.round(rev * 0.51),
-      Math.round(rev * 0.74),
-      Math.round(rev * 0.69),
-      Math.round(rev * 0.88),
-      Math.round(rev)
-    ];
-    const revenueSparkline = this.generateSparkline(sparkPoints, 280, 46, '#2563eb', 'kpi-rev-spark');
 
     kpiContainer.innerHTML = `
-      <!-- 1. Hero Revenue Card (Bento Span 5) -->
-      <div class="stat-card kpi-col-5">
+      <!-- 1. Total Net Revenue -->
+      <div class="stat-card">
         <div class="stat-card-header">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span class="stat-card-title">Net Revenue (All Channels)</span>
-            <span class="kpi-pulse-live"><span class="kpi-pulse-dot"></span> Live Sync</span>
-          </div>
-          <div class="stat-card-icon" style="background:#eff6ff; color:#2563eb; border-color:#dbeafe;">
-            ${Icons.get('credit-card', '', 18)}
-          </div>
+          <span class="stat-card-title">Total Revenue</span>
+          <span class="stat-card-icon">${Icons.get('credit-card', '', 16)}</span>
         </div>
-
-        <div class="stat-card-value" style="font-size:2.35rem; color:#0f172a;">
-          $${kpis.revenue.toFixed(2)} <span style="font-size:14px; font-weight:700; color:#3b82f6;">USD</span>
-        </div>
-
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-          <span class="kpi-metric-badge" style="background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; font-weight:700;">
-            ≈ ${revenueKHR} ៛ KHR
-          </span>
-          <span style="font-size:11px; color:#64748b;">(NBC Simulated: 4,100)</span>
-          <span class="trend-pill-up" style="margin-left:auto;">&uarr; +18.4%</span>
-        </div>
-
-        <!-- Embedded SVG Area Sparkline -->
-        <div style="margin:4px 0 10px;">
-          ${revenueSparkline}
-        </div>
-
-        <div class="stat-card-footer" style="padding-top:10px;">
-          <div style="display:flex; align-items:center; gap:12px; font-size:11px;">
-            <span><strong>POS In-Store:</strong> $${posRev.toFixed(0)} (${posPct}%)</span>
-            <span>&bull;</span>
-            <span><strong>E-Commerce:</strong> $${onlineRev.toFixed(0)} (${onlinePct}%)</span>
-          </div>
+        <div class="stat-card-value">$${kpis.revenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+        <div class="stat-card-desc">
+          <span class="stat-trend-up">&uarr; +18.4%</span>
+          <span>from last month</span>
         </div>
       </div>
 
-      <!-- 2. Gross Margin & Unit Profitability (Bento Span 3) -->
-      <div class="stat-card kpi-col-3">
+      <!-- 2. Gross Profit -->
+      <div class="stat-card">
         <div class="stat-card-header">
-          <span class="stat-card-title">Gross Profit & Margin</span>
-          <div class="stat-card-icon" style="background:#ecfdf5; color:#10b981; border-color:#a7f3d0;">
-            ${Icons.get('bar-chart', '', 18)}
-          </div>
+          <span class="stat-card-title">Gross Profit</span>
+          <span class="stat-card-icon">${Icons.get('bar-chart', '', 16)}</span>
         </div>
-
-        <div class="stat-card-value" style="color:#059669;">
-          $${kpis.grossProfit.toFixed(2)}
-        </div>
-        <div class="stat-card-sub">Net Margin: <strong>${kpis.profitMargin}%</strong></div>
-
-        <!-- Progress Bar for Profit Margin -->
-        <div class="kpi-progress-track">
-          <div class="kpi-progress-fill" style="width:${Math.min(100, Math.max(10, parseFloat(kpis.profitMargin) * 2))}%; background:linear-gradient(90deg, #10b981, #059669);"></div>
-        </div>
-
-        <div class="stat-card-footer">
-          <span class="trend-pill-up">&uarr; +2.4% vs target</span>
-          <span style="font-size:11px; color:#64748b;">FIFO Cost Basis</span>
+        <div class="stat-card-value">$${kpis.grossProfit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+        <div class="stat-card-desc">
+          <span class="stat-trend-up">${kpis.profitMargin}%</span>
+          <span>gross profit margin</span>
         </div>
       </div>
 
-      <!-- 3. Active Order Pipeline & Fulfillment (Bento Span 4) -->
-      <div class="stat-card kpi-col-4">
+      <!-- 3. Total Orders -->
+      <div class="stat-card">
         <div class="stat-card-header">
-          <span class="stat-card-title">Order Fulfillment Velocity</span>
-          <div class="stat-card-icon" style="background:#f0f9ff; color:#0284c7; border-color:#bae6fd;">
-            ${Icons.get('shopping-bag', '', 18)}
-          </div>
+          <span class="stat-card-title">Total Orders</span>
+          <span class="stat-card-icon">${Icons.get('shopping-bag', '', 16)}</span>
         </div>
-
-        <div class="stat-card-value">
-          ${kpis.totalOrders} <span style="font-size:13px; font-weight:600; color:#64748b;">Orders</span>
-        </div>
-
-        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
-          <span class="badge badge-primary" style="font-size:10px;">
-            ${kpis.pendingOrders} in Picking & Transit
-          </span>
-          <span class="badge badge-success" style="font-size:10px;">
-            ${validOrders.filter(o => o.status === 'Delivered' || o.status === 'Completed').length} Completed
-          </span>
-        </div>
-
-        <div class="kpi-progress-track">
-          <div class="kpi-progress-fill" style="width:78%; background:#0284c7;"></div>
-        </div>
-
-        <div class="stat-card-footer">
-          <span style="font-size:11px; color:#475569;">Avg Dispatch: <strong>22 mins</strong></span>
-          <a href="javascript:void(0)" onclick="adminApp.renderModule('fulfillment')" style="color:#2563eb; font-weight:600; text-decoration:none; font-size:11px;">Station &rarr;</a>
+        <div class="stat-card-value">${kpis.totalOrders}</div>
+        <div class="stat-card-desc">
+          <span class="stat-trend-info">${kpis.pendingOrders} active</span>
+          <span>in fulfillment</span>
         </div>
       </div>
 
-      <!-- 4. Network Inventory Asset Valuation (Bento Span 4) -->
-      <div class="stat-card kpi-col-4">
+      <!-- 4. Low Stock Alerts -->
+      <div class="stat-card">
         <div class="stat-card-header">
-          <span class="stat-card-title">Network Inventory Assets</span>
-          <div class="stat-card-icon" style="background:#f8fafc; color:#475569; border-color:#e2e8f0;">
-            ${Icons.get('box', '', 18)}
-          </div>
+          <span class="stat-card-title">Low Stock Items</span>
+          <span class="stat-card-icon">${Icons.get('alert-triangle', '', 16)}</span>
         </div>
-
-        <div class="stat-card-value" style="font-size:1.85rem;">
-          $${valuation.totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-        </div>
-        <div class="stat-card-sub">
-          <strong>${valuation.totalItems}</strong> Physical Units Across Branches
-        </div>
-
-        <!-- Stacked Multi-Branch Distribution Bar -->
-        <div class="kpi-progress-track" title="Branch Stock Distribution">
-          <div class="kpi-stacked-seg" style="width:32%; background:#2563eb;" title="Phnom Penh Central: 32%"></div>
-          <div class="kpi-stacked-seg" style="width:24%; background:#38bdf8;" title="Toul Kork: 24%"></div>
-          <div class="kpi-stacked-seg" style="width:18%; background:#10b981;" title="Sen Sok: 18%"></div>
-          <div class="kpi-stacked-seg" style="width:14%; background:#f59e0b;" title="Siem Reap: 14%"></div>
-          <div class="kpi-stacked-seg" style="width:12%; background:#94a3b8;" title="Warehouse: 12%"></div>
-        </div>
-
-        <div class="stat-card-footer">
-          <span class="kpi-metric-badge">5 Locations Audited</span>
-          <a href="javascript:void(0)" onclick="adminApp.renderModule('inventory')" style="color:#2563eb; font-weight:600; text-decoration:none; font-size:11px;">Inventory &rarr;</a>
-        </div>
-      </div>
-
-      <!-- 5. Stock Shortage Radar (Bento Span 4) -->
-      <div class="stat-card kpi-col-4">
-        <div class="stat-card-header">
-          <span class="stat-card-title">Stock Shortage Radar</span>
-          <div class="stat-card-icon" style="background:#fffbeb; color:#d97706; border-color:#fde68a;">
-            ${Icons.get('alert-triangle', '', 18)}
-          </div>
-        </div>
-
-        <div class="stat-card-value" style="color:${kpis.lowStockCount > 0 ? '#d97706' : '#10b981'};">
-          ${kpis.lowStockCount} <span style="font-size:13px; font-weight:600; color:#64748b;">SKUs At Risk</span>
-        </div>
-
-        <div class="stat-card-sub">
-          ${kpis.lowStockCount > 0 ? 'Units are &le; reorder safety threshold' : 'All branch stocks healthy'}
-        </div>
-
-        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
-          ${lowStockItems.slice(0, 2).map(i => `
-            <span class="badge badge-warning" style="font-size:10px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-              ${i.sku} (${i.totalAvailable} left)
-            </span>
-          `).join('') || '<span class="badge badge-success" style="font-size:10px;">Safe Buffer Maintained</span>'}
-        </div>
-
-        <div class="stat-card-footer">
-          <span class="${kpis.lowStockCount > 0 ? 'trend-pill-warn' : 'trend-pill-up'}">
-            ${kpis.lowStockCount > 0 ? 'Replenish Required' : 'Optimal'}
-          </span>
-          <button class="btn btn-outline btn-sm" onclick="adminApp.renderModule('transfers')" style="padding:2px 8px; font-size:10px; font-weight:700;">
-            ⚡ Quick Transfer
-          </button>
-        </div>
-      </div>
-
-      <!-- 6. Cambodia Digital Payments & Bakong Adoption (Bento Span 4) -->
-      <div class="stat-card kpi-col-4">
-        <div class="stat-card-header">
-          <span class="stat-card-title">Bakong KHQR Penetration</span>
-          <div class="stat-card-icon" style="background:#fff1f2; color:#be123c; border-color:#fecdd3;">
-            ${Icons.get('qr-code', '', 18)}
-          </div>
-        </div>
-
-        <div class="stat-card-value" style="color:#be123c;">
-          ${khqrPct}% <span style="font-size:13px; font-weight:600; color:#64748b;">Digital Ratio</span>
-        </div>
-
-        <div class="stat-card-sub">
-          <strong>$${khqrTotal.toFixed(0)}</strong> KHQR &bull; <strong>$${cashTotal.toFixed(0)}</strong> Cash &bull; <strong>$${cardTotal.toFixed(0)}</strong> Card
-        </div>
-
-        <!-- Stacked Payment Channel Gauge -->
-        <div class="kpi-progress-track" title="Payment Mix: Crimson=Bakong KHQR, Green=Cash, Blue=Card">
-          <div class="kpi-stacked-seg" style="width:${khqrPct}%; background:#be123c;" title="Bakong KHQR: ${khqrPct}%"></div>
-          <div class="kpi-stacked-seg" style="width:${cashPct}%; background:#10b981;" title="Cash: ${cashPct}%"></div>
-          <div class="kpi-stacked-seg" style="width:${cardPct}%; background:#2563eb;" title="Card: ${cardPct}%"></div>
-        </div>
-
-        <div class="stat-card-footer">
-          <span class="kpi-metric-badge" style="color:#be123c; border-color:#fecdd3;">🇰🇭 NBC Bakong Online</span>
-          <a href="javascript:void(0)" onclick="adminApp.renderModule('payments')" style="color:#2563eb; font-weight:600; text-decoration:none; font-size:11px;">Ledger &rarr;</a>
+        <div class="stat-card-value" style="color:${kpis.lowStockCount > 0 ? '#d97706' : '#0f172a'};">${kpis.lowStockCount}</div>
+        <div class="stat-card-desc">
+          ${kpis.lowStockCount > 0 
+            ? `<span class="stat-trend-warn">${kpis.lowStockCount} items</span> <span>below safety limit</span>`
+            : `<span class="stat-trend-up">All items</span> <span>sufficiently stocked</span>`}
         </div>
       </div>
     `;
@@ -546,23 +329,49 @@ class AdminApp {
 
     const bFilter = this.selectedBranchFilter === 'All' ? null : this.selectedBranchFilter;
     const orders = stateManager.get('orders') || [];
-    const filtered = orders.filter(o => !bFilter || o.assignedBranch === bFilter).slice(0, 6);
+    const branches = stateManager.get('branches') || [];
+    const branchMap = {};
+    branches.forEach(b => { branchMap[b.id] = b.name; });
+    const filtered = orders.filter(o => !bFilter || o.assignedBranch === bFilter).slice(0, 5);
 
     if (filtered.length === 0) {
       tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted" style="padding:24px;">No transactions recorded.</td></tr>`;
       return;
     }
 
-    tbody.innerHTML = filtered.map(o => `
-      <tr>
-        <td><strong>${o.orderNumber}</strong></td>
-        <td><span class="badge ${o.channel === 'POS' ? 'badge-secondary' : 'badge-primary'}">${o.channel}</span></td>
-        <td>${o.customerName}</td>
-        <td>${o.branchName || o.assignedBranch}</td>
-        <td><strong>$${o.total.toFixed(2)}</strong></td>
-        <td><span class="badge badge-${o.status === 'Completed' ? 'success' : o.status === 'Cancelled' ? 'danger' : 'info'}">${o.status}</span></td>
-      </tr>
-    `).join('');
+    const getStatusBadge = (status) => {
+      switch (status) {
+        case 'Completed':
+        case 'Delivered':
+          return 'badge-success';
+        case 'Confirmed':
+        case 'Processing':
+        case 'Picking':
+        case 'Ready for Pickup':
+          return 'badge-primary';
+        case 'Pending':
+        case 'Pending Payment':
+          return 'badge-warning';
+        case 'Cancelled':
+          return 'badge-danger';
+        default:
+          return 'badge-secondary';
+      }
+    };
+
+    tbody.innerHTML = filtered.map(o => {
+      const bName = o.branchName || branchMap[o.assignedBranch] || o.assignedBranch;
+      return `
+        <tr>
+          <td style="font-weight:600; color:#0f172a;">${o.orderNumber}</td>
+          <td><span class="badge ${o.channel === 'POS' ? 'badge-secondary' : 'badge-primary'}" style="font-size:11px;">${o.channel}</span></td>
+          <td style="color:#334155;">${o.customerName}</td>
+          <td style="color:#64748b; font-size:12px;">${bName}</td>
+          <td style="font-weight:600; font-variant-numeric:tabular-nums; color:#0f172a;">$${(o.total || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+          <td><span class="badge ${getStatusBadge(o.status)}" style="font-size:11px;">${o.status}</span></td>
+        </tr>
+      `;
+    }).join('');
   }
 
   renderLowStockWidget() {
@@ -574,23 +383,24 @@ class AdminApp {
 
     if (lowStock.length === 0) {
       container.innerHTML = `
-        <div style="text-align:center; padding:20px 0; color:#10b981;">
-          ${Icons.get('check', '', 32)}
-          <p style="font-size:13px; font-weight:600; margin-top:6px;">All branches sufficiently stocked.</p>
+        <div style="text-align:center; padding:32px 0; color:#16a34a;">
+          <div style="margin-bottom:8px;">${Icons.get('check', '', 28)}</div>
+          <p style="font-size:13px; font-weight:600; margin:0;">All inventory levels healthy</p>
+          <span style="font-size:11px; color:#64748b;">No products require restocking.</span>
         </div>
       `;
       return;
     }
 
     container.innerHTML = lowStock.slice(0, 5).map(item => `
-      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:8px; font-size:12px;">
-        <div>
-          <div style="font-weight:700; color:#0f172a;">${item.product.name}</div>
-          <div style="color:#64748b;">${item.branchName} (${item.sku})</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; margin-bottom:8px; font-size:12px;">
+        <div style="min-width:0; flex:1; padding-right:8px;">
+          <div style="font-weight:600; color:#0f172a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.product.name}</div>
+          <div style="color:#64748b; font-size:11px;">${item.branchName} &bull; ${item.sku}</div>
         </div>
-        <div style="text-align:right;">
-          <span class="badge ${item.available === 0 ? 'badge-danger' : 'badge-warning'}">
-            ${item.available} Available
+        <div style="text-align:right; flex-shrink:0;">
+          <span class="badge ${item.available === 0 ? 'badge-danger' : 'badge-warning'}" style="font-size:11px;">
+            ${item.available} in stock
           </span>
           <div style="font-size:10px; color:#94a3b8; margin-top:2px;">Reorder at ${item.reorderLevel}</div>
         </div>
@@ -599,12 +409,68 @@ class AdminApp {
   }
 
   initDashboardCharts() {
-    if (typeof Chart === 'undefined') return;
+    const bFilter = this.selectedBranchFilter === 'All' ? null : this.selectedBranchFilter;
+    const branchData = reportService.getRevenueByBranch();
+    const catData = reportService.getSalesByCategory(bFilter);
+
+    // If Chart.js is not loaded, render clean HTML fallback visualizations
+    if (typeof Chart === 'undefined') {
+      const branchBody = document.getElementById('chart-branch-body');
+      if (branchBody) {
+        const maxRev = Math.max(...branchData.map(b => b.revenue), 1);
+        branchBody.innerHTML = `
+          <div style="display:flex; flex-direction:column; gap:12px; justify-content:center; height:100%; padding:8px 0;">
+            ${branchData.map(b => {
+              const pct = Math.round((b.revenue / maxRev) * 100);
+              return `
+                <div>
+                  <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
+                    <span style="font-weight:600; color:#1e293b;">${b.name}</span>
+                    <span style="font-weight:700; color:#0f172a;">$${b.revenue.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                  </div>
+                  <div style="height:8px; background:#f1f5f9; border-radius:9999px; overflow:hidden;">
+                    <div style="height:100%; width:${pct}%; background:#2563eb; border-radius:9999px; transition:width 0.3s ease;"></div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      const catBody = document.getElementById('chart-category-body');
+      if (catBody) {
+        const totalAmount = catData.reduce((sum, c) => sum + c.amount, 0) || 1;
+        const colors = ['#2563eb', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
+        catBody.innerHTML = `
+          <div style="display:flex; flex-direction:column; gap:10px; justify-content:center; height:100%; padding:8px 0;">
+            ${catData.map((c, i) => {
+              const pct = Math.round((c.amount / totalAmount) * 100);
+              const color = colors[i % colors.length];
+              return `
+                <div>
+                  <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
+                    <span style="display:flex; align-items:center; gap:6px; color:#1e293b;">
+                      <span style="width:8px; height:8px; border-radius:50%; background:${color};"></span>
+                      ${c.category}
+                    </span>
+                    <span style="font-weight:600; color:#0f172a;">${pct}% ($${c.amount.toLocaleString('en-US', { minimumFractionDigits: 0 })})</span>
+                  </div>
+                  <div style="height:6px; background:#f1f5f9; border-radius:9999px; overflow:hidden;">
+                    <div style="height:100%; width:${pct}%; background:${color}; border-radius:9999px;"></div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+      return;
+    }
 
     // 1. Revenue by Branch Bar Chart
     const ctxBranch = document.getElementById('chart-revenue-branch');
     if (ctxBranch) {
-      const branchData = reportService.getRevenueByBranch();
       if (this.charts.revenueBranch) this.charts.revenueBranch.destroy();
 
       this.charts.revenueBranch = new Chart(ctxBranch, {
@@ -614,17 +480,42 @@ class AdminApp {
           datasets: [{
             label: 'Revenue ($ USD)',
             data: branchData.map(b => b.revenue),
-            backgroundColor: ['#2563eb', '#0d9488', '#0284c7', '#3b82f6'],
-            borderRadius: 6
+            backgroundColor: '#2563eb',
+            hoverBackgroundColor: '#1d4ed8',
+            borderRadius: 6,
+            maxBarThickness: 36
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleFont: { size: 12, weight: 'bold' },
+              bodyFont: { size: 12 },
+              padding: 10,
+              cornerRadius: 8,
+              callbacks: {
+                label: (ctx) => ' Revenue: $' + ctx.parsed.y.toLocaleString('en-US', { minimumFractionDigits: 2 })
+              }
+            }
+          },
           scales: {
-            y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
-            x: { grid: { display: false } }
+            y: {
+              beginAtZero: true,
+              grid: { color: '#f1f5f9' },
+              ticks: {
+                callback: (v) => '$' + v.toLocaleString(),
+                font: { size: 11 },
+                color: '#64748b'
+              }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 11 }, color: '#64748b' }
+            }
           }
         }
       });
@@ -633,8 +524,6 @@ class AdminApp {
     // 2. Sales by Category Doughnut Chart
     const ctxCat = document.getElementById('chart-sales-category');
     if (ctxCat) {
-      const bFilter = this.selectedBranchFilter === 'All' ? null : this.selectedBranchFilter;
-      const catData = reportService.getSalesByCategory(bFilter);
       if (this.charts.salesCategory) this.charts.salesCategory.destroy();
 
       this.charts.salesCategory = new Chart(ctxCat, {
@@ -643,14 +532,29 @@ class AdminApp {
           labels: catData.map(c => c.category),
           datasets: [{
             data: catData.map(c => c.amount),
-            backgroundColor: ['#2563eb', '#0d9488', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899'],
-            borderWidth: 2
+            backgroundColor: ['#2563eb', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } }
+          cutout: '72%',
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { boxWidth: 10, padding: 12, font: { size: 11 }, color: '#475569' }
+            },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              padding: 10,
+              cornerRadius: 8,
+              callbacks: {
+                label: (ctx) => ' ' + ctx.label + ': $' + ctx.parsed.toLocaleString('en-US', { minimumFractionDigits: 2 })
+              }
+            }
+          }
         }
       });
     }

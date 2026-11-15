@@ -25,7 +25,7 @@ class StateManager {
       if (saved) {
         const parsed = JSON.parse(saved);
         // Automatically migrate to new Flagship & Premium mock data if on older schema
-        if (parsed && parsed.products && parsed.products.some(p => p.sku === 'IP16-PM-256')) {
+        if (parsed && parsed.products && parsed.products.some(p => p.sku === 'IP16-PM-256') && parsed.orders && parsed.orders.some(o => o.id === 'ORD-2026-006')) {
           return parsed;
         }
       }
